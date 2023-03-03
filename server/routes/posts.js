@@ -29,6 +29,9 @@ router.delete(
 );
 
 /* TEST route: delay response */
-router.get('/delay', postController.test_delay);
+router.get('/test/delay', postController.test_delay);
+
+/* TEST route: dummy answer */
+router.post('/test/post', validators.ask_question, postController.dummy_answer);
 
 module.exports = router;

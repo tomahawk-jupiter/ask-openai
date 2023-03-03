@@ -28,6 +28,8 @@ After Vite, React and MUI are installed the boilerplate is 83 MB.
   - [useEffect renders twice](#useeffect-renders-twice)
 - [Scroll Into View](#scroll-into-view)
 - [Loading Icon](#loading-icon)
+- [Git Commands](#git-commands)
+- [Preserving whitespace](#preserving-whitespace)
 - [Debugging](#debugging)
 
 ## Links
@@ -343,24 +345,30 @@ There are two loading icons.
 
 [Page Top](#contents)
 
-## Debugging
+## Git Commands
 
-### Bug 1: posting twice
+```sh
+$ git checkout -b test # create a new branch called test and switch to it
+$ git branch # Show branches
+$ git branch -a # Show “hidden” branches too
+$ git checkout main # Go to main branch
+$ git merge test # Merge test branch into currently checked out branch
+$ git branch -d <new branch> # Delete the branch now its been merged into
 
-`Uncaught Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement.`
+$ git commit --amend -m "New commit message." # overwrite previous commit
 
-The bug happens when posting a 2nd question. It still gets added to the DB, but the frontend stops running.
+### Add to github
+$ git remote add origin <REMOTE_URL> # or <SSH> for the empty repo you created in github (create one first, don't include README or anything)
+$ git remote -v # Verify the new remote URL or SSH
+$ git push origin main # push your local files to github
+```
 
-[react docs possible help](https://reactjs.org/docs/hooks-rules.html#only-call-hooks-at-the-top-level)
+[Page Top](#contents)
 
-TODO: Possible cause is the typewriter custom hook. You shouldn't use state inside normal js functions. Maybe this isn't how to make a custom hook?
+## Preserving whitespace
 
-FIXED? the useType hook is called conditionally. I made it so that it is always called and the condition chooses whether to pass true or false as an argument. If false, the useType won't do the typing action.
+This can be used when outputting strings to the page. This is css, it can be passed to MUI elements as below.
 
-### Bug 2: deleting twice
-
-The newPostId value must change when deleting a post so that it triggers a useEffect that gets all the posts. I was passing the same string value each time so when deleting a 2nd post, the value didn't change so there was no re-render.
-
-FIX: I fixed by passing the postId +1 for the newPostId. This is to make sure it will always be a new value.
+`sx={{whiteSpace: 'pre-wrap'}}`
 
 [Page Top](#contents)

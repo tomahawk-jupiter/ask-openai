@@ -1,14 +1,5 @@
 const { body, param } = require('express-validator');
 
-/**** usage in route file ****/
-// const validators = require('./validators');
-// validators.ask_question
-
-/**** usage in controller file *****/
-// const { validationResult } = require('express-validator)
-// const errors = validationResult(req); // put this inside the controller
-// if (!errors.isEmpty()) { return res.status(422).json({errors: errors.array()})}
-
 exports.ask_question = [
   body('question')
     .trim()

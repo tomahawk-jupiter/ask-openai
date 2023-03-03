@@ -11,7 +11,7 @@ const useType = (string, type) => {
       setStrProgress(strProgress + nextIndex);
       const incCount = count < string.length - 1 ? count + 1 : count;
       setCount(incCount);
-    }, 30);
+    }, 10);
   }, [count]);
 
   return type ? strProgress : string;

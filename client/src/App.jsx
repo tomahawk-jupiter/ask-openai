@@ -2,19 +2,23 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Container, Box } from "@mui/material";
+import { Container, Box, Alert } from "@mui/material";
 import FormDialog from "./components/formDialog";
 import Post from "./components/post";
 import axiosInstance from "./axios.config";
 import { posts as mockPosts } from "./mock-data/postsWithComments";
 import Header from "./components/header";
 import LoadingIcon from "./components/loadingIcon";
+import FlashMessageDelete from "./components/flashMessageDelete";
 
 export default function MyApp() {
   const [posts, setPosts] = useState(null);
   const [newPostId, setNewPostId] = useState(null);
   const [themeMode, setThemeMode] = useState("dark");
   const [loading, setLoading] = useState(false);
+  const [mockMode, setMockMode] = useState(false);
+  const [delPostId, setDelPostId] = useState(null);
+  const [flash, setFlash] = useState(false);
 
   const darkTheme = createTheme({
     palette: {
@@ -23,15 +27,17 @@ export default function MyApp() {
   });
 
   useEffect(() => {
-    console.log("1st useEffect ran!");
+    setLoading(false);
 
-    try {
-      const newPostElement = document.getElementById(newPostId);
-      console.log({ newPostElement });
-    } catch (err) {
-      console.log({ newPostElemErr });
+    if (posts) {
+      const filteredPosts = posts.filter((p) => p._id != delPostId);
+      console.log({ filteredPosts });
+      setPosts(filteredPosts);
     }
+  }, [delPostId, newPostId]);
 
+  useEffect(() => {
+    console.log("1st useEffect ran!");
     const getAllPosts = async () => {
       try {
         const res = await axiosInstance.get("/");
@@ -41,10 +47,11 @@ export default function MyApp() {
         // Use mock posts if the request fails
         console.log({ getAllPostErr: err });
         setPosts(mockPosts);
+        setMockMode(true); //
       }
     };
     getAllPosts();
-  }, [newPostId]);
+  }, []);
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -53,9 +60,21 @@ export default function MyApp() {
 
         {loading && <LoadingIcon />}
 
-        <FormDialog setNewPostId={setNewPostId} setLoading={setLoading} />
+        <FormDialog
+          mockMode={mockMode}
+          posts={posts}
+          setPosts={setPosts}
+          setNewPostId={setNewPostId}
+          setLoading={setLoading}
+        />
 
         <Header setThemeMode={setThemeMode} />
+
+        {mockMode && (
+          <Alert severity="error">
+            Api isn't responding, started in mock mode!
+          </Alert>
+        )}
 
         <div>
           {posts ? (
@@ -66,10 +85,13 @@ export default function MyApp() {
                     key={post._id}
                     id={post._id}
                     question={post.question}
-                    answer={post.answer}
+                    answer={post.answer.trim()}
                     comments={post.comments}
                     newPostId={newPostId}
                     setNewPostId={setNewPostId}
+                    delPostId={delPostId}
+                    setDelPostId={setDelPostId}
+                    setFlash={setFlash}
                   />
                 );
               })}
@@ -86,6 +108,13 @@ export default function MyApp() {
             </Box>
           )}
         </div>
+
+        <FlashMessageDelete
+          flash={flash}
+          setFlash={setFlash}
+          message="Post deleted!"
+          type="success"
+        />
       </Container>
     </ThemeProvider>
   );

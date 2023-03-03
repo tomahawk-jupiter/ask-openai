@@ -28,8 +28,17 @@
 - ✅ handle question post failure
 - ✅ Reuse the flash message by passing in a message and type ie. success/error.
 - ✅ Input validation, prevent whitespace only being submitted
-- TODO: Append newpost response to posts state to avoid get_all posts.
+- ✅ Append newpost response to posts state to avoid get_all posts.
+  - ✅ scroll to and type in mock mode
+  - ✅ delete post in mock mode
+  - how to prevent the get_all useEffect?
+  - ✅ display a message saying api is broken
+- ✅ preserve whitespace when displaying question.
+- ✅ delete success flash message not working
+- ✅ changes with api connected (without openAI)
+- ✅ adding comments
 - TODO: TEST post question with openAI api connected
+- TODO: TEST too many questions error
 - TODO: Fix comment input for below 355px width.
 - TODO: TURN REACT STRICT MODE back on before production / build IMPORTANT
 - TODO: Host on github pages. Look up the command I used before for adding a pages branch.
@@ -83,8 +92,13 @@ Tools:
 
 ## Debugging
 
-I'm getting this in the console when clicking the add new post button: `Element.setCapture() is deprecated. Use Element.setPointerCapture() instead. For more help https://developer.mozilla.org/docs/Web/API/Element/setPointerCapture`. It seems to only happen when in firefox responsive design mode.
+1. I'm getting this in the console when clicking the add new post button: `Element.setCapture() is deprecated. Use Element.setPointerCapture() instead. For more help https://developer.mozilla.org/docs/Web/API/Element/setPointerCapture`. It seems to only happen when in firefox responsive design mode.
+2. trim() is preventing whitespace in input, supposed to just validate
 
 ## Style Debug
 
 - The comment input starts looking dodgy at 355px width.
+
+## State management
+
+I might be better off using Redux or Context for state management. I'm starting to pass alot of useState hooks around!

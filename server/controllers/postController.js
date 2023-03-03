@@ -18,41 +18,32 @@ exports.all_posts = async (req, res) => {
 exports.ask_question = async (req, res) => {
   const errors = validationResult(req);
 
-  return res.status(500).json({ message: 'test 500 error.' }); // TEST
-
   if (!errors.isEmpty()) {
     const errorMessages = errors.array().map((errObj) => errObj.msg);
     return res.status(400).json({ errors: errorMessages });
   }
 
   const question = req.body.question;
-  // let answer; // TEST
+  let answer;
 
-  /**
-   * TODO: use the openai api to get an answer for the question.
-   */
+  try {
+    const prompt = question;
 
-  // TEST DEBUG
-  // try {
-  //   const prompt = question;
+    const response = await openaiInstance.createCompletion({
+      model: 'text-davinci-003',
+      prompt: `${prompt}`,
+      temperature: 0,
+      max_tokens: 500,
+      top_p: 1,
+      frequency_penalty: 0.5,
+      presence_penalty: 0
+    });
 
-  //   const response = await openaiInstance.createCompletion({
-  //     model: 'text-davinci-003',
-  //     prompt: `${prompt}`,
-  //     temperature: 0,
-  //     max_tokens: 500,
-  //     top_p: 1,
-  //     frequency_penalty: 0.5,
-  //     presence_penalty: 0
-  //   });
-
-  //   answer = response.data.choices[0].text;
-  // } catch (error) {
-  //   console.log({ openAiError: error });
-  //   return res.status(500).json({ error: 'OpenAI request failed!' });
-  // }
-
-  const answer = 'my favourite colour is blue'; // TEST
+    answer = response.data.choices[0].text;
+  } catch (error) {
+    console.log({ openAiError: error });
+    return res.status(500).json({ error: 'OpenAI request failed!' });
+  }
 
   const newPost = new Post({
     question,
@@ -155,9 +146,36 @@ exports.delete_comment = async (req, res) => {
   }
 };
 
+/**** TEST Routes ****/
+
 // TEST Delay
 exports.test_delay = (req, res) => {
   setTimeout(() => {
     return res.status(200).json({ message: 'Success' });
   }, 5000);
+};
+
+// TEST Dummy answer
+exports.dummy_answer = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((errObj) => errObj.msg);
+    return res.status(400).json({ errors: errorMessages });
+  }
+
+  const question = req.body.question;
+  const answer = 'This is a dummy response from the test route.'; // TEST
+
+  const newPost = new Post({
+    question,
+    answer
+  });
+
+  try {
+    const savedPost = await newPost.save();
+    return res.status(200).json(savedPost);
+  } catch (err) {
+    return res.status(500).json({ error: 'Something went wrong!' });
+  }
 };

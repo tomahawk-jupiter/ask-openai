@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Box, Modal, Button, Typography } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import axiosInstance from "../axios.config";
-import FlashMessageDelete from "./flashMessageDelete";
 
 const style = {
   position: "absolute",
@@ -20,22 +19,28 @@ const style = {
   textAlign: "center",
 };
 
-export default function DeleteModal({ postId, setNewPostId }) {
-  const [flash, setFlash] = useState(false);
+export default function DeleteModal({
+  postId,
+  setNewPostId,
+  setDelPostId,
+  setFlash,
+}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleDeletePost = async () => {
     try {
-      const deleteResponse = await axiosInstance.delete(`/${postId}`);
+      await axiosInstance.delete(`/${postId}`);
 
       // the newPostId is used to trigger a useEffect
-      // +1 to make sure this value is changed
+      // +1 to make sure this value definetly changes
       setNewPostId(postId + 1);
     } catch (err) {
       console.log({ deletePostReqErr: err });
     }
+
+    setDelPostId(postId);
     setFlash(true);
     handleClose();
   };
@@ -74,13 +79,6 @@ export default function DeleteModal({ postId, setNewPostId }) {
           </Box>
         </Box>
       </Modal>
-
-      <FlashMessageDelete
-        flash={flash}
-        setFlash={setFlash}
-        message="Post deleted!"
-        type="success"
-      />
     </div>
   );
 }

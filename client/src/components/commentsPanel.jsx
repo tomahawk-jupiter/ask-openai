@@ -19,14 +19,20 @@ const CommentsPanel = ({ isOpen, comments, incCommentCount, postId }) => {
       });
       setCommentsInState([...commentsInState, newCommentRes.data]);
       incCommentCount();
-      console.log({ newCommentRes: newComment });
+      console.log({ newCommentRes: newCommentRes.data });
     } catch (err) {
       console.log({ postNewCommentErr: err });
+      const notSavedComment = {
+        _id: Date.now(),
+        text: input,
+      };
+      setCommentsInState([...commentsInState, notSavedComment]);
+      incCommentCount();
     }
   };
 
   const handleSubmit = (e) => {
-    if (e.code === "Enter" && input.length > 0) {
+    if (e.code === "Enter" && input.trim().length > 0) {
       postNewComment(); // Adds to DB
       setInput("");
       commentInput.current.children[1].children[0].blur(); // unFocus after submit

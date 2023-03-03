@@ -17,9 +17,19 @@ const MyCard = styled(Card)(({ theme }) => ({
   padding: "0.5rem",
 }));
 
-const Post = ({ id, question, answer, comments, newPostId, setNewPostId }) => {
+const Post = ({
+  id,
+  question,
+  answer,
+  comments,
+  newPostId,
+  setNewPostId,
+  setDelPostId,
+  setFlash,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(comments.length);
+
   const commentCountLabel = `${commentCount} Comments`;
 
   const incCommentCount = () => {
@@ -43,14 +53,17 @@ const Post = ({ id, question, answer, comments, newPostId, setNewPostId }) => {
       <MyCard>
         <Row>
           <Avatar sx={{ bgcolor: deepOrange[500] }}>Q</Avatar>
-          <Typography variant="body1">{question}</Typography>
+
+          <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
+            {question}
+          </Typography>
         </Row>
       </MyCard>
       <MyCard>
         <Row>
           <Avatar sx={{ bgcolor: teal[500] }}>Ai</Avatar>
 
-          <Typography variant="body1">
+          <Typography variant="body1" sx={{ whiteSpace: "pre-wrap" }}>
             {id == newPostId ? useType(answer, true) : useType(answer, false)}
           </Typography>
         </Row>
@@ -68,7 +81,12 @@ const Post = ({ id, question, answer, comments, newPostId, setNewPostId }) => {
           {isOpen ? "Hide" : commentCountLabel}
         </Button>
 
-        <DeleteModal postId={id} setNewPostId={setNewPostId} />
+        <DeleteModal
+          postId={id}
+          setNewPostId={setNewPostId}
+          setDelPostId={setDelPostId}
+          setFlash={setFlash}
+        />
       </Box>
     </MyCard>
   );
