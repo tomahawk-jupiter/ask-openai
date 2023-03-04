@@ -31,13 +31,11 @@ export default function MyApp() {
 
     if (posts) {
       const filteredPosts = posts.filter((p) => p._id != delPostId);
-      console.log({ filteredPosts });
       setPosts(filteredPosts);
     }
   }, [delPostId, newPostId]);
 
   useEffect(() => {
-    console.log("1st useEffect ran!");
     const getAllPosts = async () => {
       try {
         const res = await axiosInstance.get("/");
@@ -45,7 +43,6 @@ export default function MyApp() {
         setLoading(false);
       } catch (err) {
         // Use mock posts if the request fails
-        console.log({ getAllPostErr: err });
         setPosts(mockPosts);
         setMockMode(true); //
       }

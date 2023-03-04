@@ -41,7 +41,6 @@ exports.ask_question = async (req, res) => {
 
     answer = response.data.choices[0].text;
   } catch (error) {
-    console.log({ openAiError: error });
     return res.status(500).json({ error: 'OpenAI request failed!' });
   }
 

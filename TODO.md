@@ -37,9 +37,9 @@
 - ✅ delete success flash message not working
 - ✅ changes with api connected (without openAI)
 - ✅ adding comments
-- TODO: TEST post question with openAI api connected
-- TODO: TEST too many questions error
-- TODO: Fix comment input for below 355px width.
+- ✅ post question with openAI api connected
+- ✅ Fix comment input for below 355px width.
+- ✅ Clean up console.logs
 - TODO: TURN REACT STRICT MODE back on before production / build IMPORTANT
 - TODO: Host on github pages. Look up the command I used before for adding a pages branch.
 - TODO: Refactor / structure components folder.

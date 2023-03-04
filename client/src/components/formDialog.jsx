@@ -37,20 +37,18 @@ export default function FormDialog({
   const postNewQuestion = async () => {
     try {
       setLoading(true);
-      // TEST: real route
-      // const res = await axiosInstance.post("/", { question: input });
+      // Returns an answer
+      const res = await axiosInstance.post("/", { question: input });
 
       // TEST: dummy response for testing.
-      const res = await axiosInstance.post("/test/post", { question: input });
+      // const res = await axiosInstance.post("/test/post", { question: input });
 
-      console.log({ postQuestRes: res.data });
       const newPost = res.data;
 
       setNewPostId(newPost._id);
       setPosts([...posts, res.data]);
     } catch (err) {
-      // TODO: add the post to state even if DB api fails
-      console.log({ err });
+      // add the post to state even if DB api fails
       setLoading(false);
       setFlash(true);
     }
@@ -64,7 +62,6 @@ export default function FormDialog({
         "Sorry, the backend is unavailable. This is placeholder text. \nLorem ipsum dolor sit, amet consectetur adipisicing elit. In maxime enim id ipsam, fuga maiores illo quibusdam dolores omnis sed! Illum, neque ullam! Ut officia nostrum, accusamus perferendis ad laborum?",
       comments: [],
     };
-    console.log({ newPostMock });
     setPosts([...posts, newPostMock]);
     setNewPostId(newPostMock._id);
   };

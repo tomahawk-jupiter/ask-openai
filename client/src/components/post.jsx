@@ -38,8 +38,6 @@ const Post = ({
 
   // Scroll newly added post into view
   useEffect(() => {
-    console.log("2nd useEffect ran!");
-
     if (newPostId == id) {
       const justAddedPost = document.getElementById(newPostId);
       justAddedPost.scrollIntoView({

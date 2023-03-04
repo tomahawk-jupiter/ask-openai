@@ -1,4 +1,4 @@
-import { Container, TextField } from "@mui/material";
+import { Container, TextField, Box } from "@mui/material";
 import { useRef, useState } from "react";
 import axiosInstance from "../axios.config";
 import Comment from "./comment";
@@ -19,9 +19,7 @@ const CommentsPanel = ({ isOpen, comments, incCommentCount, postId }) => {
       });
       setCommentsInState([...commentsInState, newCommentRes.data]);
       incCommentCount();
-      console.log({ newCommentRes: newCommentRes.data });
     } catch (err) {
-      console.log({ postNewCommentErr: err });
       const notSavedComment = {
         _id: Date.now(),
         text: input,
@@ -40,7 +38,18 @@ const CommentsPanel = ({ isOpen, comments, incCommentCount, postId }) => {
   };
 
   return (
-    <Container sx={{ ml: "4rem", display: `${isOpen ? "block" : "none"}` }}>
+    // TEST
+    // <Container sx={{ ml: "4rem", display: `${isOpen ? "block" : "none"}` }}>
+    <Container
+      sx={{
+        // marginLeft: "3rem",
+        // display: "flex",
+        // flexDirection: "column",
+        // justifyContent: "center",
+        // alignItems: "start",
+        display: `${isOpen ? "block" : "none"}`,
+      }}
+    >
       {commentsInState.map((comment) => {
         return <Comment key={comment._id} comment={comment.text} />;
       })}
@@ -49,11 +58,16 @@ const CommentsPanel = ({ isOpen, comments, incCommentCount, postId }) => {
           label="Comment..."
           variant="outlined"
           size="small"
+          fullWidth
           onKeyDown={handleSubmit}
           value={input}
           onChange={handleChange}
           ref={commentInput}
-          sx={{ marginTop: "0.5rem" }}
+          sx={{
+            marginTop: "0.5rem",
+            marginBottom: "0.5rem",
+            maxWidth: "500px",
+          }}
           autoFocus={isOpen}
           inputProps={{ maxLength: 240 }}
           multiline

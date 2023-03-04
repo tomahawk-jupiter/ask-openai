@@ -62,4 +62,23 @@ export const posts = [
       },
     ],
   },
+  {
+    _id: 5,
+    question: "Give me a simple example of a Java function.",
+    answer:
+      "public static int addTwoNumbers(int a, int b) {\n\treturn a + b;\n}",
+    comments: [],
+  },
+  {
+    _id: 6,
+    question: "Write a 4 line poem that rhymes with time.",
+    answer:
+      "Time will pass, no matter what we do,\nIt's a constant that will always be true,\nWe can't control it, no matter how hard we try,\nIt's a force that will never die.",
+    comments: [
+      {
+        _id: 601,
+        text: "That doesn't rhyme with time!",
+      },
+    ],
+  },
 ];

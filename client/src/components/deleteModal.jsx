@@ -36,9 +36,7 @@ export default function DeleteModal({
       // the newPostId is used to trigger a useEffect
       // +1 to make sure this value definetly changes
       setNewPostId(postId + 1);
-    } catch (err) {
-      console.log({ deletePostReqErr: err });
-    }
+    } catch (err) {}
 
     setDelPostId(postId);
     setFlash(true);
