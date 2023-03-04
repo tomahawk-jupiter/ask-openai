@@ -30,10 +30,14 @@ Things I learnt, revised and looked up while writing this api.
   - [Sanitizers Available in express-validator](#sanitize-user-input-for-use-in-mongoose-queries)
   - [Express Validators in Seperate file](#express-validators-in-seperate-file)
   - [Mongo Sanitize](#mongo-sanitize)
-- [Prepare For Production](#prepare-for-production)
   - [Helmet](#helmet)
 - [OpenAI](#openai)
   - [OpenAI Playground](#openai-playground)
+- [Prepare For Production](#prepare-for-production)
+  - [Helmet](#helmet)
+  - [Node Version in package.json](#node-version)
+  - [Set NODE_ENV to 'production'](#set-node_env-to-production)
+  - [Create a Procfile](#create-a-procfile)
 
 ## Links
 
@@ -56,7 +60,7 @@ Delete the public folder and its contents as I'm just making a rest api and won'
 
 ### Start Express in DEBUG mode
 
-Debug is like an augmented version of console.log, but unlike console.log, you don’t have to comment out debug logs in production code. Logging is turned off by default and can be conditionally turned on by using the DEBUG environment variable.
+Debug is like an augmented version of console.log, but unlike console.log, you don't have to comment out debug logs in production code. Logging is turned off by default and can be conditionally turned on by using the DEBUG environment variable.
 
 ```
 "start": "node ./bin/www",
@@ -458,40 +462,6 @@ Users.findOne({ name: clean }, function (err, doc) {
 
 [Page Top](#contents)
 
-## Prepare For Production
-
-### Helmet
-
-Helmet helps you secure your Express apps by setting various HTTP headers.
-
-From my `jupiter-book` project repo. These were the configurations to get that project working. But helmet with all the defaults `app.use(helmet())` might work for this project.
-
-```js
-// app.use(helmet()); // use helmet with defaults
-app.use(morgan('common'));
-app.use(cors());
-
-app.use(helmet.hidePoweredBy());
-app.use(helmet.frameguard({ action: 'deny' }));
-app.use(helmet.xssFilter());
-app.use(helmet.noSniff());
-app.use(helmet.ieNoOpen());
-
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", 'cloudflare-ipfs.com', 'res.cloudinary.com'],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: []
-    }
-  })
-);
-```
-
-[Page Top](#contents)
-
 ## OpenAI
 
 ### OpenAI Playground
@@ -542,5 +512,65 @@ app.post('/', async (req, res) => {
   }
 });
 ```
+
+[Page Top](#contents)
+
+## Prepare For Production
+
+### Helmet
+
+Helmet helps you secure your Express apps by setting various HTTP headers.
+
+From my `jupiter-book` project repo. These were the configurations to get that project working, it took some figuring out! But helmet with all the defaults `app.use(helmet())` might work for this project.
+
+```js
+app.use(cors());
+// app.use(helmet()); // use helmet with defaults
+
+app.use(helmet.hidePoweredBy());
+app.use(helmet.frameguard({ action: 'deny' }));
+app.use(helmet.xssFilter());
+app.use(helmet.noSniff());
+app.use(helmet.ieNoOpen());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", 'cloudflare-ipfs.com', 'res.cloudinary.com'],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: []
+    }
+  })
+);
+```
+
+[Page Top](#contents)
+
+### Node Version
+
+Add this to package.json.
+
+```json
+"engines": {
+  "node": "18.12.0"
+}
+```
+
+### Set NODE_ENV to 'production'
+
+By default its set to 'development', changing it to 'production' will:
+Remove stack traces in error pages.
+Caches view templates and CSS files generated from CSS extensions.
+This can improve performance by a factor of three!
+
+This change can be made either by using export, an environment file, or the OS initialization system.
+
+## Create a Procfile:
+
+Create a `procfile` (no extension) and put in: `web: node ./bin/www`.
+
+**Note**: no longer required. If not included heroku (and maybe other tools?) looks for start script.
 
 [Page Top](#contents)

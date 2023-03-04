@@ -2,6 +2,14 @@
 
 Users can ask openai questions and receive an answer. Comments can be added to the posts.
 
+## What I Used
+
+- [openai](https://openai.com/api/)
+- [Vite](https://vitejs.dev/guide/)
+- [Material UI](https://mui.com/material-ui/getting-started/installation/)
+
+I made notes as I went along in `NOTES.md`.
+
 ## What It Does?
 
 - Users can post questions to openai and a response will be returned.
@@ -12,21 +20,6 @@ Users can ask openai questions and receive an answer. Comments can be added to t
 **NOTE**: the chatbot doesn't remember previous answers. Maybe I could improve this somehow so that users can have an ongoing conversation with it.
 
 **NOTE**: The free version of openai api only allows limited usage.
-
-## Links
-
-- [openai docs](https://openai.com/api/)
-- [Vite](https://vitejs.dev/guide/)
-- [Material UI](https://mui.com/material-ui/getting-started/installation/)
-
-## What I Used
-
-- Vite
-- React
-- Material UI
-- OpenAI
-
-See `NOTES.md` for more detailed notes about the process and what I learnt.
 
 ## How It Works
 

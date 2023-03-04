@@ -361,6 +361,9 @@ $ git commit --amend -m "New commit message." # overwrite previous commit
 $ git remote add origin <REMOTE_URL> # or <SSH> for the empty repo you created in github (create one first, don't include README or anything)
 $ git remote -v # Verify the new remote URL or SSH
 $ git push origin main # push your local files to github
+
+# Push build folder to github pages for hosting. Here folder is dist
+$ git subtree push --prefix dist origin gh-pages
 ```
 
 [Page Top](#contents)
